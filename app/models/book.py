@@ -1,7 +1,7 @@
 from __future__ import annotations
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey
-from typing import Optional
+# from typing import Optional
 from ..db import db
 
 # from typing import TYPE_CHECKING
@@ -14,11 +14,15 @@ class Book(db.Model):
     description: Mapped[str]
     author_id : Mapped[int | None] = mapped_column(ForeignKey("author.id"))
     author: Mapped[Author | None] = relationship(back_populates="books")
+    genres: Mapped[list["Genre"]] = relationship(secondary="book_genre", back_populates="books")
 
     @classmethod
     def from_dict(cls, book_data):
         author_id = book_data.get("author_id")
-        new_book = cls(title=book_data["title"], description=book_data["description"], author_id=author_id)
+        genres = book_data.get("genres", [])
+
+        new_book = cls(title=book_data["title"], description=book_data["description"], author_id=author_id, genres=genres)
+
         return new_book
 
     def to_dict(self):
@@ -29,6 +33,9 @@ class Book(db.Model):
 
         if self.author:
             book_as_dict["author"] = self.author.name
+        
+        if self.genres:
+            book_as_dict["genres"] = [genre.name for genre in self.genres]
 
         return book_as_dict
 
