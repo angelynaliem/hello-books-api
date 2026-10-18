@@ -2,6 +2,7 @@ import pytest
 from app import create_app
 from app.db import db
 from app.models.book import Book
+from app.models.author import Author
 from flask.signals import request_finished
 from dotenv import load_dotenv
 import os
@@ -42,4 +43,10 @@ def two_saved_books(app):
     # Alternatively, we could do
     # db.session.add(ocean_book)
     # db.session.add(mountain_book)
+    db.session.commit()
+
+@pytest.fixture
+def one_saved_author(app):
+    author = Author(name="New Author 1")
+    db.session.add(author)
     db.session.commit()
