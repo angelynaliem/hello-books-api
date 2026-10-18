@@ -12,8 +12,8 @@ class Book(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     title: Mapped[str]
     description: Mapped[str]
-    author_id : Mapped[Optional[int]] = mapped_column(ForeignKey("author.id"))
-    author: Mapped[Optional["Author"]] = relationship(back_populates="books")
+    author_id : Mapped[int | None] = mapped_column(ForeignKey("author.id"))
+    author: Mapped[Author | None] = relationship(back_populates="books")
 
     @classmethod
     def from_dict(cls, book_data):
