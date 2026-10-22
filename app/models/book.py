@@ -1,7 +1,7 @@
-from __future__ import annotations
+# from __future__ import annotations
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey
-# from typing import Optional
+from typing import Optional
 from ..db import db
 
 # from typing import TYPE_CHECKING
@@ -12,8 +12,8 @@ class Book(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     title: Mapped[str]
     description: Mapped[str]
-    author_id : Mapped[int | None] = mapped_column(ForeignKey("author.id"))
-    author: Mapped[Author | None] = relationship(back_populates="books")
+    author_id : Mapped[Optional[int]] = mapped_column(ForeignKey("author.id"))
+    author: Mapped[Optional["Author"]] = relationship(back_populates="books")
     genres: Mapped[list["Genre"]] = relationship(secondary="book_genre", back_populates="books")
 
     @classmethod

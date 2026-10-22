@@ -1,4 +1,4 @@
-from __future__ import annotations
+# from __future__ import annotations
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from ..db import db
 
@@ -9,7 +9,7 @@ from ..db import db
 class Genre(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str]
-    books: Mapped[list[Book]] = relationship(secondary="book_genre", back_populates="genres")
+    books: Mapped[list["Book"]] = relationship(secondary="book_genre", back_populates="genres")
 
     @classmethod
     def from_dict(cls, genre_data):
